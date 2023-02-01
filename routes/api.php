@@ -22,6 +22,7 @@ Route::get('get', [ServiceController::class , 'index']);
 Route::post('create', [ServiceController::class , 'store']);
 Route::put('update', [ServiceController::class , 'update']);
 Route::delete('delete/{id}', [ServiceController::class , 'destroy']);
-
+Route::post('import', [ServiceController::class , 'import']);
+Route::get('export', [ServiceController::class , 'export']);
 
 

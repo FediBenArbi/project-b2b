@@ -1,13 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Service;
 use Illuminate\Http\Request;
-
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use League\Csv\Writer;
+use App\Models\Service;
 use App\Http\Requests\StorePostRequest;
 use App\Services\ServicesforService\StoreService;
 use App\Services\ServicesforService\UpdateService;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Schema;
+use League\Csv\Reader;
+use SplTempFileObject;
+use App\Jobs\SendJobDoneEmail;
+use App\Services\ExportServices;
+use App\Services\ImportServices;
 
 class ServiceController extends Controller
 {
@@ -22,6 +31,7 @@ class ServiceController extends Controller
         return Service::all();
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -30,7 +40,7 @@ class ServiceController extends Controller
     public function create()
     {
 
-;
+        ;
     }
 
     /**
@@ -84,8 +94,21 @@ class ServiceController extends Controller
      * @param  \App\Models\Service  $service
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
         Service::findOrFail($id)->delete();
     }
+    public function import(Request $request)
+    {
+        ImportServices::import($request);
+        return ('Data imported successfully');
+
+    }
+    public function export()
+    {
+        ExportServices::export();
+        return ('Data exported successfully.');
+    }
 }
+
+       
