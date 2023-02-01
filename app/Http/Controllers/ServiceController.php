@@ -2,18 +2,10 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
-use League\Csv\Writer;
 use App\Models\Service;
 use App\Http\Requests\StorePostRequest;
 use App\Services\ServicesforService\StoreService;
 use App\Services\ServicesforService\UpdateService;
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Schema;
-use League\Csv\Reader;
-use SplTempFileObject;
 use App\Jobs\SendJobDoneEmail;
 use App\Services\ExportServices;
 use App\Services\ImportServices;
@@ -101,14 +93,14 @@ class ServiceController extends Controller
     public function import(Request $request)
     {
         ImportServices::import($request);
-        return ('Data imported successfully');
+        dispatch(new SendJobDoneEmail('fedibenarbi22@gmail.com'));
 
     }
     public function export()
     {
         ExportServices::export();
-        return ('Data exported successfully.');
-    }
+        dispatch(new SendJobDoneEmail('fedibenarbi22@gmail.com'));}
+    
 }
 
        
